@@ -2,7 +2,7 @@
   "name": "agent-hr",
   "version": "1.0.0",
   "private": true,
-  "description": "Agent HR — AI-Powered Job Description Studio for Hexagon",
+  "description": "Hexagon JD Agent — AI-Powered Job Description Studio for Hexagon",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -94,9 +94,9 @@ export default function CreateJDPage() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+    <div className="grid grid-cols-1 gap-6 xl:grid-cols-2 print:block">
       {/* LEFT: FORM */}
-      <div className="panel space-y-5 p-6">
+      <div className="panel space-y-5 p-6 print:hidden">
         <div>
           <h2 className="text-base font-semibold">Create Job Description</h2>
           <p className="text-sm text-white/50">Fill in the details below. Claude will craft a professional JD for you.</p>
@@ -211,14 +211,14 @@ export default function CreateJDPage() {
       </div>
 
       {/* RIGHT: PREVIEW */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
+      <div className="space-y-3 print:space-y-0">
+        <div className="flex items-center justify-between print:hidden">
           <h2 className="text-base font-semibold">JD Preview</h2>
           {jd && <RefineToolbar disabled={loading} busyAction={refining} onAction={handleRefine} />}
         </div>
 
-        <div className="flex gap-4">
-          <div className="panel flex-1 overflow-hidden p-2">
+        <div className="flex gap-4 print:block print:gap-0">
+          <div className="panel flex-1 overflow-hidden p-2 print:rounded-none print:border-none print:p-0 print:shadow-none print:overflow-visible">
             {loading ? <GenerationLoader /> : <JDPreview jd={jd} />}
           </div>
           <ExportToolbar jd={jd} />

@@ -1,4 +1,4 @@
-# Agent HR — AI-Powered Job Description Studio (Hexagon)
+# Hexagon JD Agent — AI-Powered Job Description Studio
 
 Next.js 15 (App Router) + TypeScript + Tailwind, built for serverless deployment on Vercel.
 Uses the Anthropic API exclusively, called only from server-side route handlers.

@@ -7,7 +7,7 @@ const DEFAULT_TITLE = { title: 'Dashboard', subtitle: 'Overview of your HR AI ac
 
 const TITLES: Record<string, { title: string; subtitle: string }> = {
   '/': DEFAULT_TITLE,
-  '/create-jd': { title: 'Agent HR', subtitle: 'AI-Powered Job Description Studio' },
+  '/create-jd': { title: 'Hexagon JD Agent', subtitle: 'AI-Powered Job Description Studio' },
   '/templates': { title: 'Templates', subtitle: 'Reusable job role templates' },
   '/saved-jds': { title: 'Saved JDs', subtitle: 'Your saved job descriptions' },
   '/settings': { title: 'Settings', subtitle: 'Workspace configuration' },
@@ -18,7 +18,7 @@ export function Navbar() {
   const { title, subtitle } = TITLES[pathname] ?? DEFAULT_TITLE;
 
   return (
-    <header className="flex items-center justify-between border-b border-border bg-surface px-6 py-4">
+    <header className="flex items-center justify-between border-b border-border bg-surface px-6 py-4 print:hidden">
       <div>
         <h1 className="text-lg font-semibold">{title}</h1>
         <p className="text-sm text-white/50">{subtitle}</p>

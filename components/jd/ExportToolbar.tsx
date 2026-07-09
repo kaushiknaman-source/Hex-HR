@@ -31,7 +31,7 @@ export function ExportToolbar({ jd }: { jd: GeneratedJD | null }) {
   ];
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-1.5 print:hidden">
       {actions.map(({ icon: Icon, label, onClick }) => (
         <button
           key={label}

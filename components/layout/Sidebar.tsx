@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
@@ -25,10 +26,10 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex w-64 shrink-0 flex-col border-r border-border bg-surface">
-      <div className="flex items-center gap-2 px-6 py-5">
-        <HexagonMark className="h-7 w-7" />
-        <span className="text-lg font-bold tracking-wide">HEXAGON</span>
+    <aside className="flex w-64 shrink-0 flex-col border-r border-border bg-surface print:hidden">
+      <div className="flex items-center gap-2.5 px-6 py-5">
+        <Image src="/hexagon-icon.png" alt="Hexagon" width={32} height={37} className="h-8 w-auto" priority />
+        <span className="text-2xl font-bold tracking-wide">HEXAGON</span>
       </div>
 
       <p className="px-6 pb-4 text-xs uppercase tracking-widest text-hexagon.coolGrey9 text-white/40">
@@ -84,10 +85,3 @@ export function Sidebar() {
   );
 }
 
-function HexagonMark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 260 320" className={className} fill="none" stroke="white" strokeWidth="10">
-      <path d="M8 100 L128 8 L128 260 L8 260 Z M128 8 L128 260 L252 100 L128 176 L252 100 M128 260 L252 176" strokeLinejoin="round" strokeLinecap="round" />
-    </svg>
-  );
-}
