@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-geist: 'Geist', 'Inter', Arial, sans-serif;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-white antialiased;
+    font-feature-settings: 'ss01' on, 'cv01' on;
+  }
+
+  ::selection {
+    background: #01ADFF;
+    color: #00284C;
+  }
+
+  /* Accessible focus ring — never removed, per WCAG requirement */
+  :focus-visible {
+    outline: 2px solid #01ADFF;
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #173F63;
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #1F4E7A;
+  }
+}
+
+@layer utilities {
+  .panel {
+    @apply bg-surface border border-border rounded-lg shadow-panel;
+  }
+  .panel-muted {
+    @apply bg-surfaceMuted border border-border rounded-md;
+  }
+}
