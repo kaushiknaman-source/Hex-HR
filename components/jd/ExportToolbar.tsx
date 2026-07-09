@@ -1,10 +1,14 @@
 'use client';
 
-import { Copy, FileDown, FileText, Printer, Share2, Save } from 'lucide-react';
+import { useState } from 'react';
+import { Copy, Check, FileDown, FileText, Printer, Share2, Save } from 'lucide-react';
 import { GeneratedJD } from '@/lib/types/jd';
+import { recordActivity, recordEvent, saveJD } from '@/lib/localStore';
 
 export function ExportToolbar({ jd }: { jd: GeneratedJD | null }) {
   const disabled = !jd;
+  const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   async function handleCopy() {
     if (!jd) return;
@@ -19,15 +23,28 @@ export function ExportToolbar({ jd }: { jd: GeneratedJD | null }) {
       ...jd.keyResponsibilities.map((r) => `- ${r}`),
     ].join('\n');
     await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
+  }
+
+  function handleExport() {
+    recordEvent('export');
+    if (jd) recordActivity(`Exported "${jd.title}"`);
+    window.print();
+  }
+
+  function handleSave() {
+    if (!jd) return;
+    saveJD(jd);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 1800);
   }
 
   const actions = [
-    { icon: Copy, label: 'Copy', onClick: handleCopy },
-    { icon: FileDown, label: 'Download PDF', onClick: () => window.print() },
-    { icon: FileText, label: 'Download DOCX', onClick: () => alert('Wire up /api/export/docx (docx package included).') },
-    { icon: Printer, label: 'Print', onClick: () => window.print() },
-    { icon: Share2, label: 'Share', onClick: () => alert('Wire up share link generation.') },
-    { icon: Save, label: 'Save JD', onClick: () => alert('Wire up persistence (DB / KV) here.') },
+    { icon: copied ? Check : Copy, label: copied ? 'Copied' : 'Copy', onClick: handleCopy },
+    { icon: FileDown, label: 'Download PDF', onClick: handleExport },
+    { icon: Printer, label: 'Print', onClick: handleExport },
+    { icon: saved ? Check : Save, label: saved ? 'Saved' : 'Save JD', onClick: handleSave },
   ];
 
   return (
@@ -43,6 +60,26 @@ export function ExportToolbar({ jd }: { jd: GeneratedJD | null }) {
           {label}
         </button>
       ))}
+
+      <div className="mt-1 border-t border-border pt-1.5">
+        <p className="px-1 pb-1 text-[11px] uppercase tracking-wide text-white/30">Coming soon</p>
+        <button
+          disabled
+          title="DOCX export is on the roadmap"
+          className="flex w-full cursor-not-allowed items-center gap-2 rounded-md px-3 py-2 text-sm text-white/30"
+        >
+          <FileText className="h-4 w-4" />
+          Download DOCX
+        </button>
+        <button
+          disabled
+          title="Share links are on the roadmap"
+          className="flex w-full cursor-not-allowed items-center gap-2 rounded-md px-3 py-2 text-sm text-white/30"
+        >
+          <Share2 className="h-4 w-4" />
+          Share
+        </button>
+      </div>
     </div>
   );
 }

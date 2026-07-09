@@ -8,7 +8,6 @@ import {
   FilePenLine,
   LayoutTemplate,
   BookmarkCheck,
-  Sparkles,
   Settings,
   CheckCircle2,
 } from 'lucide-react';
@@ -19,7 +18,6 @@ const NAV_ITEMS = [
   { href: '/create-jd', label: 'Create JD', icon: FilePenLine },
   { href: '/templates', label: 'Templates', icon: LayoutTemplate },
   { href: '/saved-jds', label: 'Saved JDs', icon: BookmarkCheck },
-  { href: '/ai-suggestions', label: 'AI Suggestions', icon: Sparkles },
 ];
 
 export function Sidebar() {
@@ -27,12 +25,12 @@ export function Sidebar() {
 
   return (
     <aside className="flex w-64 shrink-0 flex-col border-r border-border bg-surface print:hidden">
-      <div className="flex items-center gap-2.5 px-6 py-5">
-        <Image src="/hexagon-icon.png" alt="Hexagon" width={32} height={37} className="h-8 w-auto" priority />
-        <span className="text-2xl font-bold tracking-wide">HEXAGON</span>
+      <div className="flex items-center gap-2 px-6 py-5">
+        <Image src="/hexagon-icon-white.png" alt="Hexagon" width={24} height={28} className="h-7 w-auto shrink-0" priority />
+        <span className="text-xl font-bold tracking-wide text-white">HEXAGON</span>
       </div>
 
-      <p className="px-6 pb-4 text-xs uppercase tracking-widest text-hexagon.coolGrey9 text-white/40">
+      <p className="px-6 pb-4 text-xs uppercase tracking-widest text-white/40">
         Workspace
       </p>
 

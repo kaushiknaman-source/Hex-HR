@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import positionsData from '@/lib/data/positions.json';
 import locationsData from '@/lib/data/locations.json';
 import { Field, selectClass } from '@/components/ui/Field';
@@ -12,6 +12,7 @@ import { ExportToolbar } from '@/components/jd/ExportToolbar';
 import { RefineToolbar } from '@/components/jd/RefineToolbar';
 import { GenerationLoader } from '@/components/jd/GenerationLoader';
 import { GeneratedJD, JDFormInput, ToolbarAction } from '@/lib/types/jd';
+import { clearDraft, getDraft, recordActivity, recordEvent, setDraft } from '@/lib/localStore';
 
 const SKILL_SUGGESTIONS = [
   'Preventive Maintenance', 'PLC', 'HSE', 'ISO Documentation', 'Asset Lifecycle',
@@ -38,6 +39,25 @@ export default function CreateJDPage() {
   const [loading, setLoading] = useState(false);
   const [refining, setRefining] = useState<ToolbarAction | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [hydrated, setHydrated] = useState(false);
+  const [restored, setRestored] = useState(false);
+
+  // Restore any in-progress draft (from a previous visit, or from "Use this template").
+  useEffect(() => {
+    const draft = getDraft();
+    if (draft) {
+      setForm(draft.form);
+      setJd(draft.jd);
+      setRestored(true);
+    }
+    setHydrated(true);
+  }, []);
+
+  // Persist the draft as it changes so navigating between tabs doesn't lose progress.
+  useEffect(() => {
+    if (!hydrated) return;
+    setDraft(form, jd);
+  }, [form, jd, hydrated]);
 
   const cities = useMemo(() => (form.state ? locations[form.state] ?? [] : []), [form.state]);
 
@@ -57,6 +77,8 @@ export default function CreateJDPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'Generation failed.');
       setJd(data.jd);
+      recordEvent('generate');
+      recordActivity(`Generated JD for "${data.jd.title}"`);
     } catch (e: any) {
       setError(e.message ?? 'Something went wrong.');
     } finally {
@@ -91,6 +113,8 @@ export default function CreateJDPage() {
     });
     setJd(null);
     setError(null);
+    setRestored(false);
+    clearDraft();
   }
 
   return (
@@ -101,6 +125,15 @@ export default function CreateJDPage() {
           <h2 className="text-base font-semibold">Create Job Description</h2>
           <p className="text-sm text-white/50">Fill in the details below. Claude will craft a professional JD for you.</p>
         </div>
+
+        {restored && (
+          <div className="flex items-center justify-between rounded-md border border-hexagon-accentSky/30 bg-hexagon-accentSky/10 px-3 py-2 text-xs text-hexagon-accentSky">
+            <span>Restored your in-progress draft.</span>
+            <button onClick={() => setRestored(false)} className="font-medium hover:underline">
+              Dismiss
+            </button>
+          </div>
+        )}
 
         <div className="grid grid-cols-2 gap-4">
           <Field label="Job Position" required>
